@@ -1,13 +1,7 @@
 import { useState } from "react";
-import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Button, FlatList, StyleSheet, TextInput, View } from "react-native";
+
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState("");
@@ -27,7 +21,7 @@ export default function App() {
     //그 콜백 함수의 매개값은 항상 해당 상태 변수의 최신 값이 전달됩니다.
     setTodoGoals((currentTodoGoals) => [
       ...currentTodoGoals,
-      { text: enteredGoalText, key: Math.random().toString() },
+      { text: enteredGoalText, id: Math.random().toString() },
     ]);
   };
 
@@ -50,14 +44,11 @@ export default function App() {
         <FlatList
           data={todoGoals}
           renderItem={(itemData) => {
-            return (
-              //react-native는 스타일 상속의 개념이 없습니다.
-              <View style={styles.goalItem}>
-                <Text style={styles.goalText}>{itemData.item.text}</Text>
-              </View>
-            );
+            return <GoalItem text={itemData.item.text} />;
           }}
           keyExtractor={(item, index) => {
+            // console.log("item: ", item);
+            // console.log("index: ", index);
             return item.id;
           }}
           alwaysBounceVertical={false}
@@ -91,14 +82,5 @@ const styles = StyleSheet.create({
   },
   goalsContainer: {
     flex: 4,
-  },
-  goalItem: {
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: "#5e0acc",
-  },
-  goalText: {
-    color: "white",
   },
 });
